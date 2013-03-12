@@ -41,4 +41,10 @@ public class ChangeRelationshipsServiceImpl extends BaseOpenmrsService implement
     public ChangeRelationshipsDAO getDao() {
 	    return dao;
     }
+    
+    public int getPatientWithName(String name){
+    	System.out.println("IN GET PATIENT WITH NAME FUNCTION");
+    	return 1234;
+    }
+
 }

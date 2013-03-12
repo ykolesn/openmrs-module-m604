@@ -33,4 +33,6 @@ public interface ChangeRelationshipsService extends OpenmrsService {
 	 * Add service methods here
 	 * 
 	 */
+	public int getPatientWithName(String name);
+	
 }
