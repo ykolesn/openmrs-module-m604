@@ -7,22 +7,38 @@
 
 <h2>Information</h2>
 <form:form modelAttribute="patientSearch" method="POST" action="patientSearch.form" >
-   <table>
-    <tr>
-        <td><form:label path="name">Name</form:label></td>
-        <td><form:input path="name" /></td>
+   
+    
+        <form:label path="name">Change Person from</form:label>
+        <form:input path="name" />
+        &nbsp&nbsp&nbsp
+  	 	<form:label path="relationshipType">Relationship Type</form:label>
+  	 	<form:select path="relationshipType">
+        <option value=""></option>
+        <option value="All">All</option>
+    	</form:select>
+    	&nbsp &nbsp <input type="submit" value="Search"/>
+    
+    <br/>
+    <br/>	
+    <br/>
+    <br/>	
+    
+    <form:label path="name">Change Person To</form:label>
+        <form:input path="name" />
+        &nbsp&nbsp&nbsp
+  	 	<form:label path="relationshipType">Change Relationship Type To</form:label>
+  	 	<form:select path="relationshipType">
+        <option value="All">All</option>
+        </form:select>
+		&nbsp &nbsp <input type="submit" value="Change"/>
+		&nbsp &nbsp <input type="submit" value="Cancel"/>    	
+    		
+    <br/>
+    <br/>
         
-    </tr>
-    <tr>
-    	<td><form:label path="relationshipType">Relationship Type</form:label></td>
-        <td><form:input path="relationshipType" /></td>
-    </tr>
-    <tr>
-        <td colspan="2">
-            <input type="submit" value="Submit"/>
-        </td>
-    </tr>
-</table>  
+            
+       
 </form:form>
 
 <p>Number of Patients: ${numberOfPatients}</p>
