@@ -83,13 +83,13 @@ public class ChangeRelationshipsServiceImpl extends BaseOpenmrsService implement
     	//go through the narrow relationship list and see if names match
     	for(Relationship relationship : narrowRelationshipList){
     		String personAName = relationship.getPersonA().getPersonName().getFullName();
-    		String personBName = relationship.getPersonB().getPersonName().getFullName();
-    		System.out.println("personAName="+personAName+" personBName="+personBName);
+    		//String personBName = relationship.getPersonB().getPersonName().getFullName();
+    		System.out.println("personAName="+personAName);
     		if(name.equalsIgnoreCase(personAName)){
     			numberOfPatients++;
-    		}else if(name.equalsIgnoreCase(personBName)){
-    			numberOfPatients++;
-    		}
+    		}//else if(name.equalsIgnoreCase(personBName)){
+    			//numberOfPatients++;
+    		//}
     	}
     	return numberOfPatients;
     }
