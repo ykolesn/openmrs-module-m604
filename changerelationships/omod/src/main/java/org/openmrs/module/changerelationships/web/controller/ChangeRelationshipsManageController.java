@@ -17,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.changerelationships.ChangeRelationships;
+import org.openmrs.module.changerelationships.PatientRelationshipChange;
 import org.openmrs.module.changerelationships.PatientSearch;
 import org.openmrs.module.changerelationships.api.ChangeRelationshipsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,40 +38,59 @@ public class  ChangeRelationshipsManageController{
 	
 	protected final Log log = LogFactory.getLog(getClass());
 	
+	private int searchNumber = 0;
+	private ChangeRelationshipsService service = Context.getService(ChangeRelationshipsService.class);
+	
 	@ModelAttribute("patientSearch")
 	public PatientSearch getPatientSearchObject(){
 		return new PatientSearch();
+	}
+	
+	@ModelAttribute("patientRelationshipChange")
+	public PatientRelationshipChange getPatientRelationshipChangeObject(){
+		return new PatientRelationshipChange();
 	}
 	
 	@RequestMapping(value = "/module/changerelationships/manage", method = RequestMethod.GET)
 	public void manage(ModelMap model) {
 		model.addAttribute("user", Context.getAuthenticatedUser());
 		
-		//another way to get the service
-		ChangeRelationshipsService service = Context.getService(ChangeRelationshipsService.class);
-		System.out.println("DOING SYSTEM OUT!!!");
-		int patientNumber = service.getPatientWithName("randomName");
-		System.out.println("numberOfPatients = "+patientNumber);
+		//System.out.println("DOING SYSTEM OUT!!!");
 		
-		model.addAttribute("numberOfPatients", patientNumber);
+		model.addAttribute("numberOfPatients", searchNumber);
+		
+		//System.out.println("numberOfPatients = "+model.get("numberOfPatients"));
 		
 	}
 	
+	//handle the patient search form
 	 @RequestMapping(value="/module/changerelationships/patientSearch", method = RequestMethod.GET)
-	 public String handleRequest(ModelMap model) {
-		 System.out.println("IN GET METHOD OF PATIENTSEARCH!!!!!");
+	 public String handlePatientSearchRequest(ModelMap model) {
 		 PatientSearch patientSearch = new PatientSearch();
 		 model.addAttribute("patientSearch", patientSearch); 
 		return "patientSearch";
 	 }
 	
 	@RequestMapping(value="/module/changerelationships/patientSearch", method = RequestMethod.POST)
-	public String checkPatients(@ModelAttribute("patientSearch") PatientSearch patientSearch){
-		System.out.println("THIS THING HIT CHECK PATIENTS WOOOHOO!!!");
-		System.out.println(patientSearch.getName());
-		System.out.println(patientSearch.getRelationshipType());
-		//ModelAndView mv = new ModelAndView();
-		//mv.addObject("patientSearch", patientSearch);
+	public String checkPatients(@ModelAttribute("patientSearch") PatientSearch patientSearch){	
+		
+		searchNumber = service.searchNumberOfPatients(patientSearch.getName(), patientSearch.getRelationshipType());
+
+		return "redirect:/module/changerelationships/manage.form";
+	}
+	
+	//handle the patient relationship change form
+	@RequestMapping(value="/module/changerelationships/patientRelationshipChange", method = RequestMethod.GET)
+	 public String handlePatientChangeRequest(ModelMap model) {
+		 PatientRelationshipChange patientRelationshipChange = new PatientRelationshipChange();
+		 model.addAttribute("patientRelationshipChange", patientRelationshipChange); 
+		return "patientSearch";
+	 }
+	
+	@RequestMapping(value="/module/changerelationships/patientRelationshipChange", method = RequestMethod.POST)
+	public String changePatientRelationships(@ModelAttribute("patientRelationshipChange") PatientRelationshipChange patientRelationshipChange){
+		service.changePatientRelationships(patientRelationshipChange.getNameIn(), patientRelationshipChange.getRelationshipType(), patientRelationshipChange.getNameOut());
+
 		return "redirect:/module/changerelationships/manage.form";
 	}
 	

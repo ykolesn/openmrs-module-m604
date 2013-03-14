@@ -5,42 +5,59 @@
 
 <p>Hello ${user.systemId}!</p>
 
-<h2>Information</h2>
+<h2>Patient Information</h2>
 <form:form modelAttribute="patientSearch" method="POST" action="patientSearch.form" >
    
-    
-        <form:label path="name">Change Person from</form:label>
+	<table>
+		<td>
+        <form:label path="name"><b>Person:</b></form:label>
         <form:input path="name" />
-        &nbsp&nbsp&nbsp
-  	 	<form:label path="relationshipType">Relationship Type</form:label>
-  	 	<form:select path="relationshipType">
-        <option value=""></option>
-        <option value="All">All</option>
+        </td>
+        <td>
+  	 	<form:label path="relationshipType"><b>   Relationship Type:</b></form:label>
+  	 	<form:select multiple="true" path="relationshipType">
+  	 		<option value="Nurse">Doctor</option>
+        	<option value="Nurse">Nurse</option>
+        	<option value="Father">Father</option>
+        	<option value="Mother">Mother</option>
+        	<option value="All">All</option>
     	</form:select>
-    	&nbsp &nbsp <input type="submit" value="Search"/>
-    
-    <br/>
-    <br/>	
-    <br/>
-    <br/>	
-    
-    <form:label path="name">Change Person To</form:label>
-        <form:input path="name" />
-        &nbsp&nbsp&nbsp
-  	 	<form:label path="relationshipType">Change Relationship Type To</form:label>
-  	 	<form:select path="relationshipType">
-        <option value="All">All</option>
-        </form:select>
-		&nbsp &nbsp <input type="submit" value="Change"/>
-		&nbsp &nbsp <input type="submit" value="Cancel"/>    	
-    		
-    <br/>
-    <br/>
-        
-            
-       
+    	</td>
+    	<td>
+    	 	<input type="submit" value="Search"/>
+    	</td>
+    </table>
+ </form:form>
+ <br/>
+ <p>The search criteria has ${numberOfPatients} patients</p>
+ <br/><br/>	<br/><br/>	
+ <h2>Change Relationship</h2>
+<form:form modelAttribute="patientRelationshipChange" method="POST" action="patientRelationshipChange.form" >
+	<table>
+		<td>
+    	<form:label path="nameIn"><b> Change Person From:</b></form:label>
+    	<form:input path="nameIn" />
+    	</td>
+        <td>
+    	<form:label path="relationshipType"><b>   Change Relationship Type To:</b></form:label>
+  		<form:select multiple="true" path="relationshipType">
+  			<option value="Nurse">Doctor</option>
+        	<option value="Nurse">Nurse</option>
+        	<option value="Father">Father</option>
+        	<option value="Mother">Mother</option>
+        	<option value="All">All</option>
+    	</form:select>
+    	</td>
+    	<td>
+    	<form:label path="nameOut"><b>   Change Person To:</b></form:label>
+    	<form:input path="nameOut" />
+    	</td>
+    	<td>
+		<input type="submit" value="Change"/> 
+		</td>
+	</table> 	          
 </form:form>
 
-<p>Number of Patients: ${numberOfPatients}</p>
+
 
 <%@ include file="/WEB-INF/template/footer.jsp"%>

@@ -42,9 +42,20 @@ public class ChangeRelationshipsServiceImpl extends BaseOpenmrsService implement
 	    return dao;
     }
     
-    public int getPatientWithName(String name){
-    	System.out.println("IN GET PATIENT WITH NAME FUNCTION");
+    @Override
+    public int searchNumberOfPatients(String name, String relationshipType){
+    	System.out.println("IN searchNumberOfPatients FUNCTION");
+    	System.out.println("name="+name);
+    	System.out.println("relationshipType="+relationshipType);
     	return 1234;
     }
+
+	@Override
+	public void changePatientRelationships(String nameIn,String relationshipType, String nameOut) {
+		System.out.println("IN changePatientRelationship FUNCTION");
+    	System.out.println("name="+nameIn);
+    	System.out.println("relationshipType="+relationshipType);
+    	System.out.println("nameOut="+nameOut);
+	}
 
 }
