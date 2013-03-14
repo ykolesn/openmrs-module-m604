@@ -13,6 +13,8 @@
  */
 package org.openmrs.module.changerelationships.api.impl;
 
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -58,11 +60,34 @@ public class ChangeRelationshipsServiceImpl extends BaseOpenmrsService implement
     	System.out.println("relationshipType="+relationshipType);
     	int numberOfPatients = 0;
     	PersonService service = Context.getPersonService();
+    	
+    	
     	List<Relationship> relationshipList = service.getAllRelationships(false);
+    	System.out.println("relationshipList size="+relationshipList.size());
+    	List<Relationship> narrowRelationshipList = new LinkedList<Relationship>();
+    	//place all the comma separated values into a list for easier parsing
+    	String[] splitRelationshipTypes = relationshipType.split(",");
+    	Set<String> relationshipTypeSet = new HashSet<String>();
+    	for(String str : splitRelationshipTypes){
+    		relationshipTypeSet.add(str);
+    	}
     	for(Relationship relationship : relationshipList){
-    		String personAName = relationship.getPersonA().getGivenName();
-    		
-    		if(name.equals(personAName) && relationship.getRelationshipType().toString().equalsIgnoreCase(relationshipType)){
+    		if(relationshipTypeSet.contains(relationship.getRelationshipType().getaIsToB()) ||
+    				relationshipTypeSet.contains(relationship.getRelationshipType().getbIsToA()))
+    		{
+    			narrowRelationshipList.add(relationship);
+    		}
+    	}
+    	System.out.println("narrowRelationshipList.size="+narrowRelationshipList.size());
+    	
+    	//go through the narrow relationship list and see if names match
+    	for(Relationship relationship : narrowRelationshipList){
+    		String personAName = relationship.getPersonA().getPersonName().getFullName();
+    		String personBName = relationship.getPersonB().getPersonName().getFullName();
+    		System.out.println("personAName="+personAName+" personBName="+personBName);
+    		if(name.equalsIgnoreCase(personAName)){
+    			numberOfPatients++;
+    		}else if(name.equalsIgnoreCase(personBName)){
     			numberOfPatients++;
     		}
     	}
@@ -140,27 +165,6 @@ public class ChangeRelationshipsServiceImpl extends BaseOpenmrsService implement
 		
 		//Default return null
 		return null;
-	}
-	
-	private boolean isNameSimilar(String name, Set<PersonName> nameSet){
-		String[] splitString = name.split(" ");
-		for(String nameInSplit : splitString){
-			//check if first/middle/last name can be found in the PersonName set
-			boolean setContainedName = false;
-			for(PersonName pName : nameSet){
-				if(pName.toString().equalsIgnoreCase(nameInSplit)){
-					setContainedName = true;
-				}
-			}
-			
-			//if the set doesn't contain the name, assume non similar name and return
-			if(!setContainedName){
-				return false;
-			}
-			
-			//if set does contain name, keep stepping through the name string
-		}
-		return true;
 	}
 
 }
